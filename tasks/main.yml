@@ -1,0 +1,65 @@
+---
+# tasks file for ansible-role-aws-360-api
+
+# Install aws-360-api application
+
+- name: Create application folder
+  file:
+    state: directory
+    path: "{{ aws_360_api_root_folder }}"
+    owner: "{{ aws_360_api_user }}"
+    group: "{{ aws_360_api_user }}"
+    mode: 0755
+
+- name: Install Aws 360 Api
+  pip:
+    state: present
+    name: "{{ aws_360_api_package }}"
+    version: "{{ aws_360_api_version }}"
+    virtualenv: "{{ aws_360_api_root_folder }}/.venv"
+
+# uWSGI configuration
+
+- name: Deploy uWSGI ini configuration
+  template:
+    src: aws360api-uwsgi.ini.j2
+    dest: /etc/uwsgi/apps-available/aws360api.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload Emperor
+
+- name: Symlink uWSGI ini configuration
+  file:
+    state: link
+    src: /etc/uwsgi/apps-available/aws360api.ini
+    dest: /etc/uwsgi/apps-enabled/aws360api.ini
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload Emperor
+
+# Nginx configuration
+
+- name: Deploy Nginx configuration
+  template:
+    src: aws360api-nginx.j2
+    dest: /etc/nginx/sites-available/aws360api
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload Nginx
+
+- name: Symlink uWSGI ini configuration
+  file:
+    state: link
+    src: /etc/nginx/sites-available/aws360api
+    dest: /etc/nginx/sites-enabled/aws360api
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload Nginx

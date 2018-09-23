@@ -1,0 +1,10 @@
+---
+# defaults file for ansible-role-aws-360-api
+
+aws_360_api_root_folder: /opt/aws-360-api
+aws_360_api_user: app
+
+aws_360_api_package: aws360api
+aws_360_api_version: 0.0.5
+
+aws360api_nginx_port: 8080
