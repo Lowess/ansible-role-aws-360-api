@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   author: Lowess
   role_name: aws-360-api
-  description: "AWS 360 API unsed in AWS-360 master degree course"
+  description: "Flask API used in AWS-360 courses"
 
   company: "GrandsEnsemble Florian DAMBRINE"
   license: BSD
@@ -17,5 +17,5 @@ galaxy_info:
         - xenial
 
   galaxy_tags:
-    - aws360
+    - devops360
     - flask
